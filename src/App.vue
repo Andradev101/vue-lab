@@ -3,9 +3,12 @@ import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import Login from './components/Login.vue'
+import Logout from './components/Logout.vue'
 
+const mountLogin = ref(true);
 const showLoginComponent = ref(false);
 let showLoginButtonLabel = ref("login");
+const logoutButtonLabel = ref("logout");
 
 function toggleLoginComponent() {
   showLoginComponent.value = !showLoginComponent.value;
@@ -13,9 +16,15 @@ function toggleLoginComponent() {
 }
 
 function unmountLoginComponent() {
-  console.log("should unmount comp");
-  //TODO
-    //FIGURE OUT HOW SHOULD I UNMOUNT A COMPONENT ON DEMAND.
+  mountLogin.value = false;
+}
+
+function setMountLogin() {
+  mountLogin.value = true;
+}
+
+function performLogout() {
+  setMountLogin();
 }
 
 </script>
@@ -36,74 +45,10 @@ function unmountLoginComponent() {
   <header>
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/about">About</RouterLink>
-    <button @click="toggleLoginComponent">{{ showLoginButtonLabel }}</button>
-    <Login v-show="showLoginComponent" @unmountItself="unmountLoginComponent" />
-    <!-- <RouterLink to="/">logout</RouterLink> -->
+    <button v-if="mountLogin" @click="toggleLoginComponent">{{ showLoginButtonLabel }}</button>
+    <Login v-if="mountLogin" v-show="showLoginComponent" @unmountItself="unmountLoginComponent" @toggleShowLogin="toggleLoginComponent"/>
+    <Logout v-else :label="logoutButtonLabel" @performLogout="performLogout"/>
   </header>
   <RouterView />
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
 
