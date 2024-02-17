@@ -1,6 +1,23 @@
 <script setup>
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import Login from './components/Login.vue'
+
+const showLoginComponent = ref(false);
+let showLoginButtonLabel = ref("login");
+
+function toggleLoginComponent() {
+  showLoginComponent.value = !showLoginComponent.value;
+  showLoginButtonLabel = (showLoginComponent.value == true) ? "close" : "login";
+}
+
+function unmountLoginComponent() {
+  console.log("should unmount comp");
+  //TODO
+    //FIGURE OUT HOW SHOULD I UNMOUNT A COMPONENT ON DEMAND.
+}
+
 </script>
 
 <template>
@@ -16,7 +33,13 @@ import HelloWorld from './components/HelloWorld.vue'
       </nav>
     </div>
   </header> -->
-
+  <header>
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/about">About</RouterLink>
+    <button @click="toggleLoginComponent">{{ showLoginButtonLabel }}</button>
+    <Login v-show="showLoginComponent" @unmountItself="unmountLoginComponent" />
+    <!-- <RouterLink to="/">logout</RouterLink> -->
+  </header>
   <RouterView />
 </template>
 
@@ -83,3 +106,4 @@ nav a:first-of-type {
   }
 }
 </style>
+
