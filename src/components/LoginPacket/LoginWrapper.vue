@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { user } from '../../statemanagement/user.js';
+
 import Login from './Login.vue'
 import Logout from './Logout.vue'
+import SignedInUserHeadOptions from './SignedInUserHeadOptions.vue';
 
 const mountLogin = ref(true);
 const showLoginComponent = ref(false);
@@ -29,5 +32,6 @@ function performLogout() {
 <template>
     <button v-if="mountLogin" @click="toggleLoginComponent">{{ showLoginButtonLabel }}</button>
     <Login v-if="mountLogin" v-show="showLoginComponent" @unmountItself="unmountLoginComponent" @toggleShowLogin="toggleLoginComponent"/>
-    <Logout v-else :label="logoutButtonLabel" @performLogout="performLogout"/>
+    <SignedInUserHeadOptions v-if="user.isSignedIn" :label="user.data.login.username"/>
+    <Logout v-if="!(mountLogin)" :label="logoutButtonLabel" @performLogout="performLogout"/>
 </template>
