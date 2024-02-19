@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import { user } from '../../statemanagement/user.js'; 
+import ErrorParagraph from '../ErrorParagraph.vue';
 
 const username = ref('');
 const password = ref('');
+let errorMsg = ref('');
 const emit = defineEmits(['unmountItself, toggleShowLogin', 'userSignedIn']);
 
 onMounted(() => {
@@ -14,7 +16,7 @@ onUnmounted(() => {
 })
 
 function handleLoginInfo() {
-    if(true) { //just for dabbling, here must come the auth service
+    if(username.value == "qwe" && password.value == "qwe") { //just for dabbling, here must come the auth service
       estabilishSession();
       emit('toggleShowLogin');
       //emit('userSignedIn'); emit from child components doesnt bubble for the root
@@ -22,6 +24,9 @@ function handleLoginInfo() {
         //From this component, i should be able to emit an event to the root component (or any other), confirming the user is indeed signed in.
       setUserStateInfo(getUserInfo());
       user.signIn();
+    } else {
+      //handle login error
+      errorMsg.value = user.setLoginErrorMsg(username.value, password.value);
     }
 }
 
@@ -46,5 +51,6 @@ function setUserStateInfo(fetchedUser) {
     <input type="text" v-model="username" placeholder="username/email">
     <input type="password" v-model="password" placeholder="password">
     <button @click="handleLoginInfo">sign in</button>
+    <ErrorParagraph :errorMsg="errorMsg"/>
   </main>
 </template>

@@ -5,6 +5,7 @@ import { user } from '../../statemanagement/user.js';
 const props = defineProps ({ label:String })
 const buttonCoordinates = reactive({left: 0, top: 0});
 let showUserHeaderOptions = ref(false);
+let showUserHeaderDropdownIcon = ref('▼');
 let userHeaderOptionsComponentRef = ref(null);
 
 function handleClick(evt) {
@@ -13,6 +14,11 @@ function handleClick(evt) {
 
 function toggleShowUserHeaderOptions() {
     showUserHeaderOptions.value = !(showUserHeaderOptions.value);
+    toggleShowUserHeaderDropdownIcon(showUserHeaderOptions.value);
+}
+
+function toggleShowUserHeaderDropdownIcon(isUseHeaderOptionsOpened) {
+    showUserHeaderDropdownIcon.value = isUseHeaderOptionsOpened == true ? "▲" : "▼";
 }
 
 function getPositionOffset(component) { //must be reusable
@@ -24,7 +30,7 @@ function getPositionOffset(component) { //must be reusable
 </script>
 
 <template>
-    <button class="UserHeaderOptions" @click="handleClick">{{ label }}</button>
+    <button class="UserHeaderOptions" @click="handleClick">{{ label }} {{ showUserHeaderDropdownIcon }}</button>
     <div :style="buttonCoordinates" ref="userHeaderOptionsComponentRef" v-show="showUserHeaderOptions" class="popup">
         <img :src="user.data.picture.thumbnail"></img>
         <p>Hello, {{ user.data.name.first + " " + user.data.name.last }}!</p>
@@ -45,6 +51,7 @@ function getPositionOffset(component) { //must be reusable
     display: flex;
     position: absolute;
     border: 1px solid black;
+    background-color: white;
 }
 p {
     display: inline;

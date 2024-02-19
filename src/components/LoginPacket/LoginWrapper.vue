@@ -16,7 +16,7 @@ function toggleLoginComponent() {
   showLoginButtonLabel = (showLoginComponent.value == true) ? "close" : "login";
 }
 
-function unmountLoginComponent() {
+function setUnmountLoginComponent() {
   mountLogin.value = false;
 }
 
@@ -31,7 +31,7 @@ function performLogout() {
 
 <template>
     <button v-if="mountLogin" @click="toggleLoginComponent">{{ showLoginButtonLabel }}</button>
-    <Login v-if="mountLogin" v-show="showLoginComponent" @unmountItself="unmountLoginComponent" @toggleShowLogin="toggleLoginComponent"/>
+    <Login v-if="mountLogin" v-show="showLoginComponent" @unmountItself="setUnmountLoginComponent" @toggleShowLogin="toggleLoginComponent"/>
     <SignedInUserHeadOptions v-if="user.isSignedIn" :label="user.data.login.username"/>
     <Logout v-if="!(mountLogin)" :label="logoutButtonLabel" @performLogout="performLogout"/>
 </template>
