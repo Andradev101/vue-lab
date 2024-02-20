@@ -26,7 +26,6 @@ function getPositionOffset(component) { //must be reusable
     buttonCoordinates.top = (component.offsetHeight + component.offsetTop)  + "px";
     toggleShowUserHeaderOptions();
 }
-
 </script>
 
 <template>
@@ -34,8 +33,6 @@ function getPositionOffset(component) { //must be reusable
     <div :style="buttonCoordinates" ref="userHeaderOptionsComponentRef" v-show="showUserHeaderOptions" class="popup">
         <img :src="user.data.picture.thumbnail"></img>
         <p>Hello, {{ user.data.name.first + " " + user.data.name.last }}!</p>
-        <!-- <p>profile</p>
-        <p>settings</p> -->
     </div>
 <!-- 
     I've just hit a wall there. When using "v-if" instead of "v-show".
